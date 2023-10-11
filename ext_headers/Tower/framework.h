@@ -8,8 +8,11 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+
 // Windows Header Files
 #include <windows.h>
+
+#include <GLFW/glfw3.h>
 
 // stl global includes
 #include <cstdint>
@@ -19,48 +22,48 @@
 
 namespace Tower
 {
-
     using std::shared_ptr;
-    using std::unique_ptr;
     using std::string;
+    using std::unique_ptr;
 
     // Custom typedefs
-    typedef int8_t   S8;
-    typedef int16_t  S16;
-    typedef int32_t  S32;
-    typedef int64_t  S64;
-    typedef uint8_t  U8;
+    typedef int8_t S8;
+    typedef int16_t S16;
+    typedef int32_t S32;
+    typedef int64_t S64;
+    typedef uint8_t U8;
     typedef uint16_t U16;
     typedef uint32_t U32;
     typedef uint64_t U64;
-    typedef float  F32;
+    typedef float F32;
     typedef double F64;
     // Seprate because sometimes we want to be able to change just what a real number is.
     // Also use this wherever you are talking about a real number. Only use F32 when you
     // need a 32 bit floating point number SPECIFICALLY.
     typedef float real;
 
-    #define REAL_MAX FLT_MAX
-    #define real_sqrt sqrtf
-    #define real_abs fabsf
-    #define real_sin sinf
-    #define real_cos cosf
-    #define real_tan tanf
-    #define real_atan atanf
-    #define real_atan2 atan2f
-    #define real_exp expf
-    #define real_pow powf
-    #define real_fmod fmod4
-    #define real_epsilon DBL_EPSILON
+#define REAL_MAX FLT_MAX
+#define real_sqrt sqrtf
+#define real_abs fabsf
+#define real_sin sinf
+#define real_cos cosf
+#define real_tan tanf
+#define real_atan atanf
+#define real_atan2 atan2f
+#define real_exp expf
+#define real_pow powf
+#define real_fmod fmod4
+#define real_epsilon 0.000001f
+
     const real R_PI = static_cast<real>(3.14159265358979);
 
-//==========================================================================================================================
-//Global Helper functions
-//==========================================================================================================================
+    //==========================================================================================================================
+    // Global Helper functions
+    //==========================================================================================================================
 
-    using Entity = U32;
+    using EntityID = U32;
     // TODO: This should be moved into a config file, loaded from the runtime application.
-    const Entity MAX_ENTITIES = 5000;
+    const EntityID MAX_ENTITIES = 5000;
 
     using ComponentType = U8;
 
@@ -86,11 +89,11 @@ namespace Tower
 
     inline real REAL_CLAMP(real val, real min, real max)
     {
-        if(val < min)
+        if (val < min)
         {
             return min;
         }
-        else if(val > max)
+        else if (val > max)
         {
             return max;
         }
@@ -99,4 +102,6 @@ namespace Tower
             return val;
         }
     }
+
+    
 }

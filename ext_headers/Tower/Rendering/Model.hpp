@@ -3,12 +3,14 @@
 #include "pch.h"
 #include "Tower/framework.h"
 #include "Tower/Rendering/Texture.hpp"
-#include "Tower/utils/CubeData.hpp"
-#include "Tower/utils/TriangleData.hpp"
-#include <glm/vec3.hpp>
-#include <glm/geometric.hpp>
-#include <GL/glew.h>
-#include <array>
+#include "Tower/Rendering/Mesh.hpp"
+#include "Tower/Rendering/Shader.hpp"
+#include "Tower/Rendering/Color.hpp"
+#include "glm/vec4.hpp"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <vector>
 
 namespace Tower
 {
@@ -19,19 +21,35 @@ namespace Tower
 
         ~Model(void);
 
-        void Init(void);
+        void CreateSprite(p_Texture texture, p_Shader shader);
 
-        void Bind(bool state = true);
+        void LoadFromFile(const string& filepath, p_Shader shader);
 
-        string GetTextureName(void);
+        void Draw(const glm::mat4& viewMatrix, const glm::mat4& entityMatrix);
+
+        void EnableWireframeMode(void);
+
+        void DisableWireframeMode(void);
+
+        inline void SetTexture(p_Texture texture)
+        {
+            _texture = texture;
+        }
+
+        inline void SetColor(const Color& color)
+        {
+            _color = color;
+        }
 
     private:
-        GLuint VAO, VBO, IBO;
-        string _textureName;
+        std::vector<p_Mesh> _meshes;
+        p_Texture _texture;
+        p_Shader _shader;
+        Color _color;
 
-        void _CreateTriangle(void);
+        void _ProcessNode(aiNode* node, const aiScene* scene);
 
-        void _CalcAverageNormals(U32* indices, U32 indiceCount, GLfloat* vertices, U32 verticeCount, U32 vertexLength, U32 normalOffset);
+        p_Mesh _ProcessMesh(aiMesh* mesh, const aiScene* scene);
     };
     typedef shared_ptr<Model> p_Model;
 }

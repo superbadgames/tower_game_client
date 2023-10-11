@@ -1,7 +1,9 @@
 #pragma once
 #include "pch.h"
 #include "Tower/framework.h"
-#include <GL/glew.h>
+#include "Tower/Rendering/Uniform.hpp"
+#include "Tower/Rendering/VertexAttribute.hpp"
+#include "Tower/Rendering/Color.hpp"
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -15,54 +17,77 @@
 
 namespace Tower
 {
-    struct ShaderFilepaths
-    {
-        string vertext;
-        string fragment;
-    };
-
+    // TODO: At various stages in the shader Load, the process can fail.
+    // Currently, this is all checked and output via std::cout. Consider
+    // adding a more expressive logging system, disabling the logging when
+    // not in debug, and implementing exceptions, with try/catch blocks.
     class Shader
     {
     public:
         Shader(void);
 
-        Shader(const Shader& other);
-
-        Shader& operator=(const Shader& other);
-
         ~Shader(void);
 
-        void Load(string vertexFilepath, string fragmentFilepath);
+        void Load(const string& vertexFilepath, const string& fragmentFilepath);
 
-        void UseProgram(bool state);
+        void Use(void);
 
-        void SetUniformFloat(string name, const F32 val);
+        void StopUse(void);
 
-        void SetUniformVec2(string name, const glm::vec2& vec);
+        U32 GetAttributeLocation(const string& name);
 
-        void SetUniformVec3(string name, const glm::vec3& vec);
+        void PrintAllAttributes(void);
 
-        void SetUniformVec4(string name, const glm::vec4& vec);
+        void PrintAllUniforms(void);
 
-        void SetUniformMat4(string name, const glm::mat4& mat);
+        U32 GetUniform(string name);
 
-        void SetUniformSampler(string name, S32 texSlot);
+        void SetUniform(string name, const S32& value);
+
+        void SetUniform(string name, const F32& value);
+
+        void SetUniform(string name, const glm::vec2& value);
+
+        void SetUniform(string name, const glm::vec3& value);
+
+        void SetUniform(string name, const glm::vec4& value);
+
+        void SetUniform(string name, const glm::ivec2& value);
+
+        void SetUniform(string name, const glm::ivec4& value);
+
+        void SetUniform(string name, const glm::quat& value);
+
+        void SetUniform(string name, const glm::mat4& value);
+
+        void SetUniform(string name, const Color& color);
 
     private:
         GLuint _shaderHandle;
-        std::map<string, S32> _attributeLocations;
-        std::map<string, S32> _uniformLocations;
+        std::map<string, U32> _attributeLocations;
+        std::map<string, U32> _uniforms;
 
-        GLuint _CompileShader(string filepath, GLenum type);
+        // Don't allow copy
+        Shader(const Shader&);
+        Shader& operator=(const Shader&);
 
-        bool _Link(GLuint vertexShader, GLuint fragmentShader);
+        U32 _CompileShader(const string& path, GLenum type);
 
-        string _ReadShaderSource(string path);
-
-        GLuint _GetUniformLocation(string name);
+        // True == Linking was successful
+        // False == Linking failed
+        bool _LinkShaders(U32 vertex, U32 fragment);
 
         void _PopulateAttributes(void);
 
+        void _PopulateUniforms(void);
+
+        const string _GetShaderSourceFromFile(const string& path);
+
+        // True == There were errors found, you have a problem
+        // False == Everything is good, no errors found.
+        bool _CheckForCompileErrors(U32 shader);
+
+        void _CheckForUniform(string name);
     };
     typedef shared_ptr<Shader> p_Shader;
 }
