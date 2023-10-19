@@ -12,6 +12,7 @@
 #include "Tower/Rendering/Shader.hpp"
 #include "Tower/Input/InputController.hpp"
 #include "Tower/Entity.hpp"
+#include "Tower/Components/World.hpp"
 
 namespace Tower
 {
@@ -50,6 +51,19 @@ namespace Tower
 
         void RegisterInputWithWindow(p_InputController controller);
 
+        void CreateWorld(void);
+
+        inline p_World GetActiveWorld(void) const
+        {
+            return _activeWorld;
+        }
+
+        inline void SetActiveWorld(p_World world)
+        {
+            // TODO: Consider an enter and exit here
+            _activeWorld = world;
+        }
+
 
     private:
         static shared_ptr<Director> _instance;
@@ -59,7 +73,11 @@ namespace Tower
         // TODO: Make thse singleton
         p_ShaderManager _shaderManager;
         p_TextureManager _textureManager;
+
         p_Camera _camera;
+        //TODO: Move this to world manager?
+        p_World _activeWorld;
+        
 
         Director(void);
 

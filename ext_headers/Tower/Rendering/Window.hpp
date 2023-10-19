@@ -25,7 +25,7 @@ namespace Tower
 
         virtual void v_Cleanup(void) = 0;
 
-        virtual void v_ProcessEvents(void);
+        virtual void v_ProcessEvents(void) {};
 
         void SetColor(glm::vec3& color);
 
