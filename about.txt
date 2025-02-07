@@ -9,4 +9,6 @@ The Project.vcxproj is a generic set up for Visual Studio 2019. It links to Towe
 
 3. Update the TargetName to be the name of the new project. Prefer all lower case. This will be the name of the .exe that is created to run the game at the end. There are 4 places in the .vcxproj file that will need to be updated, and they are relatively close together.
 
-4. Open the .vscode/launch.json. Update the "program" command to be the new .exe file that is created by the project.
+4. Update the GUID for the project. Use the command `uuidgen` on a windows command prompt.
+
+5. Open the .vscode/launch.json. Update the "program" command to be the new .exe file that is created by the project.
