@@ -1,20 +1,14 @@
 #include "pch.h"
 #include <Tower/framework.h>
 #include <Tower/Managers/Director.hpp>
+#include <Tower/Managers/InputManager.hpp>
 #include <Tower/Managers/ShaderManager.hpp>
 #include <Tower/Managers/TextureManager.hpp>
-
-#include <Tower/Object.hpp>
-#include <Tower/Rendering/Model.hpp>
-
-#include "Editor/Editor.hpp"
 
 #include <GLFW/glfw3.h>
 
 
 #include <iostream>
-
-using namespace TowerGameClient_Editor;
 
 int main(void)
 {
@@ -28,6 +22,12 @@ int main(void)
         return 1;
     }
 
+    Tower::p_InputManager inputManager = Tower::InputManager::Instance();
+
+    //
+    // Set up any Input Bindings here
+    // 
+
     //
     // Initialize shaders
     //
@@ -38,10 +38,7 @@ int main(void)
     //
     // Initialize Textures
     //
-    Tower::TextureManager::Instance()->LoadTexture("container", "..\\..\\Assets\\Default\\Textures\\container.jpg");
 
-    p_Editor editor = std::make_shared<Editor>();
-    editor->v_Init();
 
 
 
